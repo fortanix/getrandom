@@ -219,7 +219,7 @@ cfg_if! {
     if #[cfg(any(target_os = "haiku", target_os = "redox", target_os = "nto", target_os = "aix"))] {
         mod util_libc;
         #[path = "use_file.rs"] mod imp;
-    } else if #[cfg(any(target_os = "android", target_os = "linux"))] {
+    } else if #[cfg(any(target_os = "android", all(target_os = "linux", not(target_env = "fortanixvme"))))] {
         mod util_libc;
         mod use_file;
         #[path = "linux_android.rs"] mod imp;
@@ -269,7 +269,7 @@ cfg_if! {
     } else if #[cfg(target_os = "emscripten")] {
         mod util_libc;
         #[path = "emscripten.rs"] mod imp;
-    } else if #[cfg(all(target_arch = "x86_64", target_env = "sgx"))] {
+    } else if #[cfg(all(target_arch = "x86_64", any(target_env = "sgx", target_env = "fortanixvme")))] {
         #[path = "rdrand.rs"] mod imp;
     } else if #[cfg(all(feature = "rdrand",
                         any(target_arch = "x86_64", target_arch = "x86")))] {
